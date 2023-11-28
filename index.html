@@ -14,30 +14,39 @@
             </div>
             <nav class="menus">
                 <ul>
-                    <li>Help</li>
-                    <li>Profile</li>
+                    <li>
+                        <button id="loadButton">Load</button>
+                        <input id="loadFileInput" type="file" accept=".json" hidden /> 
+                    </li>
+                    <li>
+                        <button id="save">Save</button>
+                    </li>
+                    <li>
+                        <div id="profile">
+                            
+                        </div>
+                    </li>
                 </ul>
             </nav>
         </header>
-        <section class="main">
-            <div class="level">
-                Level 1
+
+        
+        <div class="question">
+        </div>
+        <div class="category">
+        </div>
+        <div class="answer">
+            <span hidden></span>
+            <div class="anwerInputDiv">
+                <input class="answerInput" placeholder="Your Response" />
             </div>
-            <div class="lessons">
-                <a href="./lessons.html">
-                    <div>
-                        <h1>lessons</h1>
-                    </div>
-                </a>
-            </div>
-            <div class="reviews">
-                <a href="./reviews.html">
-                    <div>
-                        <h1>reviews</h1>
-                    </div>
-                </a>
-            </div>
-        </section>
+        </div>
+        <div class="utils">
+            <button></button>
+        </div>
+        <div class="blank"></div>
+  
+ 
         <footer class="footer">Copyright &copy Wilson, 朱</footer>
     </body>
 </html>

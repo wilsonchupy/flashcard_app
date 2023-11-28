@@ -3,90 +3,60 @@ body {
     background-color: grey;
     grid-template-areas: 
         "topnav"
-        "main"
+        "question"
+        "category"
+        "answer"
+        "utils"
+        "blank"
         "footer";
-    grid-template-rows: 0.1fr 1fr 0.1fr;
+    grid-template-rows: 1fr 2fr 1fr 1fr 1fr 6fr 1fr;
     height: 100vh;
 }
 
 .topnav {
     grid-area: topnav;
-    background-color: whitesmoke;
+    background-color: slategray;
     display: inline-block;
+    color: white;
+    font-size: 1em;
 }
 
-.main {
-    grid-area: main;
-    background-color: lightgray;
-    display: grid;
-    grid-template-areas: 
-        "level level"
-        "lessons reviews";
-    grid-template-rows: 1fr 1fr;
-    grid-template-columns: 1fr 1fr;
+.question {
+    grid-area: question;
+    background-color: magenta;
+    text-align: center;
+    font-size: 3em;
+    color: white;
+}
+
+.category {
+    grid-area: category;
+    background-color: grey;
+    text-align: center;
+    font-size: 2em;
+    box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
+}
+
+.answer {
+    grid-area: answer;
+    background-color: whitesmoke;
+}
+
+.utils {
+    grid-area: utils;
+    background-color: grey;
+    color: grey;
+}
+
+.blank {
+    grid-area: blank;
+    background-color: grey;
 }
 
 .footer {
     grid-area: footer;
     background-color: whitesmoke;
     text-align: center;
-}
-
-.level {
-    grid-area: level;
-    background-color: aquamarine;
-    text-align: center;
-    line-height: 40vh;
-}
-
-.lessons {
-    grid-area: lessons;
-    background-color: #FF00AA;
-    margin: 50px;
-    color: whitesmoke;
-    text-align: bottom;
-}
-
-.reviews {
-    grid-area: reviews;
-    background-color: #00AAFF;
-    margin: 50px;
-    color: whitesmoke;
-    text-align: bottom;
-}
-
-.lessons div {
-    width: 100%;
-    height: 100%;
-    display: table;
-}
-
-.reviews div {
-    width: 100%;
-    height: 100%;
-    display: table;
-}
-
-.lessons h1 {
-    display: table-cell;
-    font-size: 3em;
-    vertical-align: bottom;
-}
-
-.reviews h1 {
-    display: table-cell;
-    font-size: 3em;
-    vertical-align: bottom;
-}
-
-.lessons a {
-    color: whitesmoke;
-    text-decoration: none;
-}
-
-.reviews a {
-    color: whitesmoke;
-    text-decoration: none;
 }
 
 header .logo {
@@ -104,4 +74,24 @@ header .menus ul {
 
 header .menus ul li {
     display: inline;
+}
+
+.answerInputDiv {
+    display: inline-block;
+    position: relative;
+}
+
+.answer input {
+    font-size: 2em;
+    width: 98%;
+    height: 5vh;
+    text-align: center;
+}
+
+.correctAnswer {
+    background: green;
+}
+
+.incorrectAnswer {
+    background: red;
 }
