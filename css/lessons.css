@@ -1,0 +1,97 @@
+body {
+    display: grid;
+    background-color: grey;
+    grid-template-areas: 
+        "topnav"
+        "question"
+        "category"
+        "answer"
+        "utils"
+        "blank"
+        "footer";
+    grid-template-rows: 1fr 2fr 1fr 1fr 1fr 6fr 1fr;
+    height: 100vh;
+}
+
+.topnav {
+    grid-area: topnav;
+    background-color: magenta;
+    display: inline-block;
+    color: white;
+    font-size: 1em;
+}
+
+.question {
+    grid-area: question;
+    background-color: magenta;
+    text-align: center;
+    font-size: 3em;
+    color: white;
+}
+
+.category {
+    grid-area: category;
+    background-color: grey;
+    text-align: center;
+    font-size: 2em;
+    box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
+}
+
+.answer {
+    grid-area: answer;
+    background-color: whitesmoke;
+}
+
+.utils {
+    grid-area: utils;
+    background-color: grey;
+    color: grey;
+}
+
+.blank {
+    grid-area: blank;
+    background-color: grey;
+}
+
+.footer {
+    grid-area: footer;
+    background-color: whitesmoke;
+    text-align: center;
+}
+
+header .logo {
+    float: left;
+}
+
+header .menus {
+    float: right;
+    display: block;
+}
+
+header .menus ul {
+    list-style: none;
+}
+
+header .menus ul li {
+    display: inline;
+}
+
+.answerInputDiv {
+    display: inline-block;
+    position: relative;
+}
+
+.answer input {
+    font-size: 2em;
+    width: 98%;
+    height: 5vh;
+    text-align: center;
+}
+
+.correctAnswer {
+    background: green;
+}
+
+.incorrectAnswer {
+    background: red;
+}
