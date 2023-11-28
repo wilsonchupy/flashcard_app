@@ -1,7 +1,8 @@
 let dataset;
 const loadButton = document.getElementById('loadButton');
-const reader = new FileReader();
+const saveButton = document.getElementById('saveButton');
 const answerInput = document.getElementsByClassName("answerInput")[0]; 
+const reader = new FileReader();
 
 reader.addEventListener(
     "load",
@@ -12,9 +13,13 @@ reader.addEventListener(
         // Set 
         const {name, lastSeen, levels} = dataset;
         const currentLevel = levels[levels.length-1];
-        const usernameElem = document.createElement("h1");
-        const lastSeenElem = document.createElement("h1");
-        const levelElem = document.createElement("h1");
+        const usernameElem = document.getElementById("username") ? document.getElementById("username") : document.createElement("h1");
+        const lastSeenElem = document.getElementById("lastSeen") ? document.getElementById("lastSeen") : document.createElement("h1");
+        const levelElem = document.getElementById("level") ? document.getElementById("level") : document.createElement("h1");
+
+        usernameElem.setAttribute("id", "username");
+        lastSeenElem.setAttribute("id", "lastSeen");
+        levelElem.setAttribute("id", "level");
 
         usernameElem.innerHTML = `Welcome ${name}`;
         lastSeenElem.innerHTML = `Last save: ${lastSeen}`;
@@ -42,6 +47,23 @@ loadButton.addEventListener('click', () => {
         const file = fileInput.files[0];
         reader.readAsText(file);
     });
+});
+
+saveButton.addEventListener('click', () => {
+    // Update the lastseen timestamp on save
+    let currentTimestamp = new Date();
+    currentTimestamp = currentTimestamp.toISOString().replace(/:/g,"-")
+    currentTimestamp = currentTimestamp.replace(/\./,"-")
+    dataset.lastSeen = currentTimestamp;
+    
+    // convert data to blob and create url for download
+    const datasetString = JSON.stringify(dataset);
+    const link = document.getElementById("save");
+    const blob = new Blob([datasetString], {type : 'application/json'});
+    const url = URL.createObjectURL(blob);
+    link.href = url;
+    link.download = `dataset-${currentTimestamp}.json`;
+    link.click();
 });
 
 
