@@ -9,10 +9,16 @@
     </head>
     <body>
         <header class="topnav">
-            <div class="logo">
-                <a href="./index.html"><h1>HOME</h1></a>
+            <div class="home">
+                <a href="./index.html"><img src="./images/house-solid.svg" /></a>
             </div>
-            <nav class="menus">
+            <div class="stats">
+                <img src="./images/check-solid.svg" />
+                <span id="correctPercentage"></span>
+                <img src="./images/inbox-solid.svg" />
+                <span id="remainingCount"></span>
+            </div>
+            <nav class="navs">
                 <ul>
                     <li>
                         <button id="loadButton">Load</button>
@@ -37,13 +43,13 @@
         <div class="category">
         </div>
         <div class="answer">
-            <span hidden></span>
+            <span id="answerSpan" hidden></span>
             <div class="anwerInputDiv">
                 <input class="answerInput" placeholder="Your Response" />
             </div>
         </div>
         <div class="utils">
-            <button></button>
+            <button>See Notes</button>
         </div>
         <div class="blank"></div>
   
