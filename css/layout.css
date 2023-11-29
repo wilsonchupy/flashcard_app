@@ -16,9 +16,27 @@ body {
 .topnav {
     grid-area: topnav;
     background-color: slategray;
-    display: inline-block;
     color: white;
     font-size: 1em;
+    display: grid;
+    grid-template-areas: 
+        "home stats navs";
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+.home {
+    grid-area: home;
+}
+
+.stats {
+    grid-area: stats;
+    margin: 0 auto;
+    font-size: 2em;
+}
+
+.navs {
+    grid-area: navs;
+    justify-self: end;
 }
 
 .question {
@@ -46,6 +64,7 @@ body {
     grid-area: utils;
     background-color: grey;
     color: grey;
+    margin: 0 auto;
 }
 
 .blank {
@@ -63,16 +82,20 @@ header .logo {
     float: left;
 }
 
-header .menus {
+header .stats {
+    margin: 0 auto;
+}
+
+header .navs {
     float: right;
     display: block;
 }
 
-header .menus ul {
+header .navs ul {
     list-style: none;
 }
 
-header .menus ul li {
+header .navs ul li {
     display: inline;
 }
 
