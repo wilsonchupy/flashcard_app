@@ -93,6 +93,7 @@ body {
     border: none;
     color: darkkhaki;
     font-size: 1em;
+    cursor: pointer;
 }
 
 .utils button:hover {
@@ -172,6 +173,7 @@ body {
     border: none;
     background-color: rgb(90, 100, 110);
     color: white;
+    cursor: pointer;
 }
 
 #saveButton {
@@ -179,6 +181,7 @@ body {
     border: none;
     background-color: rgb(90, 100, 110);
     color: white;
+    cursor: pointer;
 }
 
 #loadButton:hover {
