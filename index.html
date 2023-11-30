@@ -46,13 +46,20 @@
             <span id="answerSpan" hidden></span>
             <div class="answerInputDiv">
                 <input class="answerInput" placeholder="Your Response" />
-                <button>></button>
+                <button id="answerInputButton">></button>
             </div>
         </div>
         <div class="utils">
             <button>See Notes</button>
         </div>
-        <div class="blank"></div>
+        <div class="blank">
+            <dialog id="completeDialog">
+                <p>
+                    Congratulations!<br>You have completed the deck for now.<br>Progress has been saved.
+                </p>
+                <button autofocus>Close</button>
+            </dialog>
+        </div>
   
  
         <footer class="footer">Copyright &copy Wilson, 朱</footer>
