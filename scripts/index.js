@@ -11,6 +11,7 @@ const remainingCountElem = document.getElementById("remainingCount");
 const questionElem = document.getElementsByClassName("question")[0]; 
 const categoryElem = document.getElementsByClassName("category")[0]; 
 const answerInput = document.getElementsByClassName("answerInput")[0]; 
+const answerInputButton = document.getElementById("answerInputButton"); 
 const answerSpanElem = document.getElementById("answerSpan"); 
 const reader = new FileReader();
 
@@ -65,20 +66,7 @@ loadButton.addEventListener('click', () => {
 });
 
 saveButton.addEventListener('click', () => {
-    // Update the lastseen timestamp on save
-    let currentTimestamp = new Date();
-    currentTimestamp = currentTimestamp.toISOString().replace(/:/g,"-")
-    currentTimestamp = currentTimestamp.replace(/\./,"-")
-    dataset.lastSeen = currentTimestamp;
-    
-    // convert data to blob and create url for download
-    const datasetString = JSON.stringify(dataset);
-    const link = document.getElementById("save");
-    const blob = new Blob([datasetString], {type : 'application/json'});
-    const url = URL.createObjectURL(blob);
-    link.href = url;
-    link.download = `dataset-${currentTimestamp}.json`;
-    link.click();
+    saveProgress();
 });
 
 
@@ -94,7 +82,7 @@ function startLesson() {
         currentCard = lessons.shift();
         displayCard(currentCard);
     } else {
-        displayBlank();
+        displayModal();
     }
 }
 
@@ -102,10 +90,14 @@ function checkAnswer(userInput, answer) {
     if(userInput === answer) {
         answerInput.classList.add('correctAnswer');
         answerInput.classList.remove('incorrectAnswer');
+        answerInputButton.classList.add('correctAnswer');
+        answerInputButton.classList.remove('incorrectAnswer');
         return true;
     } else {
         answerInput.classList.add('incorrectAnswer');  
         answerInput.classList.remove('correctAnswer');
+        answerInputButton.classList.add('incorrectAnswer');  
+        answerInputButton.classList.remove('correctAnswer');
         return false;
     }
 }
@@ -123,7 +115,7 @@ answerInput.addEventListener('keyup', (event) => {
             // continue to next card
             displayCard(currentCard);
         } else {
-            displayBlank();
+            displayModal();
         }
     } else if(event.key === 'Enter') {
         const isCorrect = checkAnswer(answerInput.value, answerSpanElem.textContent);
@@ -141,7 +133,7 @@ answerInput.addEventListener('keyup', (event) => {
             totalIncorrectCount += 1;
         }
 
-        correctPercentageElem.innerHTML = `${Math.round(( (totalUnlearnedCards - totalIncorrectCount) / totalUnlearnedCards) * 100)} %`;
+        correctPercentageElem.innerHTML = `${Math.round(( (totalUnlearnedCards - totalIncorrectCount) / totalUnlearnedCards) * 100)}%`;
         // save the updated card back to the deck
         dataset.deck[currentCard.id] = currentCard;
         
@@ -160,6 +152,8 @@ function resetInput() {
     answerInput.value = "";
     answerInput.classList.remove('correctAnswer');
     answerInput.classList.remove('incorrectAnswer');   
+    answerInputButton.classList.remove('correctAnswer');
+    answerInputButton.classList.remove('incorrectAnswer');
     questionElem.innerHTML = "";
     categoryElem.innerHTML = "";
     answerSpanElem.textContent = "";
@@ -211,7 +205,31 @@ function getNextReviewTime(stage) {
     return new Date(result);
 }
 
-function displayBlank() {
-    const blankElem = document.getElementsByClassName("blank")[0];
-    blankElem.innerHTML = "<p>Congratulations! You have gone through all the cards in the deck. \nPlease save your progress and come back later. \nThank you! :)</p>";
+const dialog = document.querySelector("dialog");
+const closeButton = document.querySelector("dialog button");
+
+// "Close" button closes the dialog
+closeButton.addEventListener("click", () => {
+    dialog.close();
+});
+
+function displayModal() {
+    dialog.showModal();
+    saveProgress();
+}
+
+function saveProgress() {
+    let currentTimestamp = new Date();
+    currentTimestamp = currentTimestamp.toISOString().replace(/:/g,"-")
+    currentTimestamp = currentTimestamp.replace(/\./,"-")
+    dataset.lastSeen = currentTimestamp;
+    
+    // convert data to blob and create url for download
+    const datasetString = JSON.stringify(dataset);
+    const link = document.getElementById("save");
+    const blob = new Blob([datasetString], {type : 'application/json'});
+    const url = URL.createObjectURL(blob);
+    link.href = url;
+    link.download = `dataset-${currentTimestamp}.json`;
+    link.click();
 }

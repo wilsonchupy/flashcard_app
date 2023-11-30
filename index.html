@@ -8,7 +8,7 @@
         <script src="./scripts/index.js" defer></script>
     </head>
     <body>
-        <header class="topnav">
+        <div class="topnav">
             <div class="home">
                 <a href="./index.html"><img src="./images/house-solid.svg" /></a>
             </div>
@@ -35,7 +35,7 @@
                     </li>
                 </ul>
             </nav>
-        </header>
+        </div>
 
         
         <div class="question">
@@ -44,14 +44,22 @@
         </div>
         <div class="answer">
             <span id="answerSpan" hidden></span>
-            <div class="anwerInputDiv">
+            <div class="answerInputDiv">
                 <input class="answerInput" placeholder="Your Response" />
+                <button id="answerInputButton">></button>
             </div>
         </div>
         <div class="utils">
             <button>See Notes</button>
         </div>
-        <div class="blank"></div>
+        <div class="blank">
+            <dialog id="completeDialog">
+                <p>
+                    Congratulations!<br>You have completed the deck for now.<br>Progress has been saved.
+                </p>
+                <button autofocus>Close</button>
+            </dialog>
+        </div>
   
  
         <footer class="footer">Copyright &copy Wilson, 朱</footer>
