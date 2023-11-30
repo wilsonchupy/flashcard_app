@@ -1,6 +1,6 @@
 body {
     display: grid;
-    background-color: grey;
+    background-image: radial-gradient(circle at center, rgb(90, 100, 110), rgb(70, 80, 90) 50%, rgb(80, 80, 100));
     grid-template-areas: 
         "topnav"
         "question"
@@ -15,17 +15,22 @@ body {
 
 .topnav {
     grid-area: topnav;
-    background-color: slategray;
+    background-image: radial-gradient(circle at center, rgb(90, 100, 110), rgb(70, 80, 90) 50%, rgb(80, 80, 100));
+    /* border-bottom: 1px solid mediumslateblue; */
     color: white;
     font-size: 1em;
     display: grid;
     grid-template-areas: 
         "home stats navs";
     grid-template-columns: 1fr 1fr 1fr;
+    z-index: 5;
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
 }
 
 .home {
     grid-area: home;
+    display: flex;
+    align-items: center;
 }
 
 .stats {
@@ -41,7 +46,11 @@ body {
 
 .question {
     grid-area: question;
-    background-color: magenta;
+    background-color: rgb(214, 171, 224);
+    background-image: linear-gradient(to right, RebeccaPurple , PaleGoldenRod);
+    display: flex;
+    justify-content: center;
+    align-items: center;
     text-align: center;
     font-size: 3em;
     color: white;
@@ -49,72 +58,141 @@ body {
 
 .category {
     grid-area: category;
-    background-color: grey;
+    background-image: radial-gradient(circle at center, rgb(90, 100, 110), rgb(70, 80, 90) 50%, rgb(80, 80, 100));
+    display: flex;
+    justify-content: center;
+    align-items: center;
     text-align: center;
     font-size: 2em;
+    color: white;
     box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
 }
 
 .answer {
     grid-area: answer;
     background-color: whitesmoke;
+    display: grid;
+    grid-template-columns: 1fr;
+    justify-content: center;
+    align-items: center;
 }
 
 .utils {
     grid-area: utils;
-    background-color: grey;
+    background-color: slategrey;
     color: grey;
-    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr;
+    justify-content: center;
+    align-items: center;
+}
+
+.utils button {
+    height: 100%;
+    background: linear-gradient(0.25turn, rgb(189, 98, 187), powderblue, lightgoldenrodyellow);
+    border: none;
+    color: darkkhaki;
+    font-size: 1em;
+}
+
+.utils button:hover {
+    z-index: 5;
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
 }
 
 .blank {
     grid-area: blank;
-    background-color: grey;
+    background-image: radial-gradient(circle at 50% 0%, rgb(90, 100, 110), rgb(70, 80, 90) 50%, rgb(80, 80, 100));
 }
 
 .footer {
     grid-area: footer;
-    background-color: whitesmoke;
     text-align: center;
+    color: lightblue;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-header .logo {
-    float: left;
-}
-
-header .stats {
+.stats {
     margin: 0 auto;
+    display: flex;
+    align-items: center;
 }
 
-header .navs {
+.navs {
     float: right;
-    display: block;
+    display: flex;
+    align-items: center;
 }
 
-header .navs ul {
+.navs ul {
     list-style: none;
 }
 
-header .navs ul li {
+.navs ul li {
     display: inline;
 }
 
 .answerInputDiv {
-    display: inline-block;
-    position: relative;
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+    background-color: rgb(90, 100, 110);
 }
 
 .answer input {
     font-size: 2em;
-    width: 98%;
     height: 5vh;
+    width: 100%;
     text-align: center;
+    box-sizing: border-box;
+    flex-grow: 1;
+    height: 100%;
+    border: none;
+    color: white;
+    background-color: rgb(90, 100, 110);
+}
+
+.answer input:focus {
+    border: none;
+    border-bottom: 3px solid mediumturquoise;
+    outline: none;
+}
+
+.answer button {
+    font-size: 2em;
+    border: none;
+    background-color: rgb(90, 100, 110);
+    color: white;
+}
+
+#loadButton {
+    font-size: 2em;
+    border: none;
+    background-color: rgb(90, 100, 110);
+    color: white;
+}
+
+#saveButton {
+    font-size: 2em;
+    border: none;
+    background-color: rgb(90, 100, 110);
+    color: white;
+}
+
+#loadButton:hover {
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+
+#saveButton:hover {
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
 }
 
 .correctAnswer {
-    background: green;
+    background-color: mediumaquamarine!important;
 }
 
 .incorrectAnswer {
-    background: red;
+    background-color: lightcoral!important;
 }

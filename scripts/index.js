@@ -141,7 +141,7 @@ answerInput.addEventListener('keyup', (event) => {
             totalIncorrectCount += 1;
         }
 
-        correctPercentageElem.innerHTML = `${Math.round(( (totalUnlearnedCards - totalIncorrectCount) / totalUnlearnedCards) * 100)} %`;
+        correctPercentageElem.innerHTML = `${Math.round(( (totalUnlearnedCards - totalIncorrectCount) / totalUnlearnedCards) * 100)}%`;
         // save the updated card back to the deck
         dataset.deck[currentCard.id] = currentCard;
         
