@@ -31,21 +31,8 @@ reader.addEventListener(
         // Set 
         const {name, lastSeen, levels} = dataset;
         const currentLevel = levels[levels.length-1];
-        const usernameElem = document.getElementById("username") ? document.getElementById("username") : document.createElement("h1");
-        const lastSeenElem = document.getElementById("lastSeen") ? document.getElementById("lastSeen") : document.createElement("h1");
-        const levelElem = document.getElementById("level") ? document.getElementById("level") : document.createElement("h1");
 
-        usernameElem.setAttribute("id", "username");
-        lastSeenElem.setAttribute("id", "lastSeen");
-        levelElem.setAttribute("id", "level");
-
-        usernameElem.innerHTML = `Welcome ${name}`;
-        lastSeenElem.innerHTML = `Last save: ${lastSeen}`;
-        levelElem.innerHTML = `Level ${currentLevel.level}`;
-
-        profileElem.appendChild(usernameElem);
-        profileElem.appendChild(lastSeenElem);
-        profileElem.appendChild(levelElem);
+        setProfile(name, lastSeen, currentLevel.level);
 
         // update user data
         dataset.lastSeen = new Date();
@@ -88,6 +75,7 @@ function startLesson() {
     } else {
         displayModal();
         disableAnswerInput();
+        resetStats();
     }
 }
 
@@ -122,6 +110,7 @@ answerInput.addEventListener('keyup', (event) => {
         } else {
             displayModal();
             disableAnswerInput();
+            resetStats();
         }
     } else if(event.key === 'Enter') {
         notesButton.removeAttribute("disabled");
@@ -230,9 +219,9 @@ function displayModal() {
 
 function saveProgress() {
     let currentTimestamp = new Date();
+    dataset.lastSeen = currentTimestamp;
     currentTimestamp = currentTimestamp.toISOString().replace(/:/g,"-")
     currentTimestamp = currentTimestamp.replace(/\./,"-")
-    dataset.lastSeen = currentTimestamp;
     
     // convert data to blob and create url for download
     const datasetString = JSON.stringify(dataset);
@@ -275,4 +264,30 @@ function disableAnswerInput() {
     answerInput.setAttribute("placeholder", "");
     answerInput.setAttribute("disabled", "");
     answerInputButton.removeAttribute("disabled");
+}
+
+function resetStats() {
+    correctPercentageElem.innerHTML = "";
+    remainingCountElem.innerHTML = "";
+}
+
+function setProfile(name, lastSeen, level) {
+    const usernameCell = document.getElementById("username");
+    const lastSeenCell = document.getElementById("lastSeen");
+    const levelCell = document.getElementById("level");
+
+    let date = lastSeen ? new Date(lastSeen) : new Date();
+    let formattedDate = date.toLocaleDateString('en-us', { 
+        year: 'numeric', 
+        month: 'short', 
+        day: 'numeric', 
+        hour: '2-digit', 
+        minute: '2-digit', 
+        second: '2-digit', 
+        hour12: false 
+    }); 
+
+    usernameCell.innerHTML = name;
+    lastSeenCell.innerHTML = formattedDate;
+    levelCell.innerHTML = `LEVEL ${level}`;
 }
