@@ -11,6 +11,11 @@ body {
         "footer";
     grid-template-rows: 1fr 2fr 1fr 1fr 1fr 6fr 1fr;
     height: 100vh;
+    font-family: 'Roboto Mono', Helvetica;
+}
+
+input, button {
+    font-family: 'Roboto Mono', Helvetica;
 }
 
 .topnav {
@@ -259,7 +264,7 @@ body {
 
 .notesCard {
     width: 50%;
-    background-color: rgb(65, 65, 75);
+    background-color: rgb(75, 65, 70);
     margin-top: 2em;
 }
 
