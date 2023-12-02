@@ -23,29 +23,17 @@ reader.addEventListener(
         dataset = JSON.parse(reader.result);
         for (let i = 0; i < dataset.deck.length; i++) {
             dataset.deck[i].id = i;
-            dataset.deck[i].stage = 0;
+            dataset.deck[i].stage = dataset.deck[i].stage ? dataset.deck[i].stage : 0;
             dataset.deck[i].incorrectCount = 0;
         }
         const profileElem = document.getElementById("profile");
         
-        // Set 
+        // Setup UI after data load
         const {name, lastSeen, levels} = dataset;
         const currentLevel = levels[levels.length-1];
-        const usernameElem = document.getElementById("username") ? document.getElementById("username") : document.createElement("h1");
-        const lastSeenElem = document.getElementById("lastSeen") ? document.getElementById("lastSeen") : document.createElement("h1");
-        const levelElem = document.getElementById("level") ? document.getElementById("level") : document.createElement("h1");
 
-        usernameElem.setAttribute("id", "username");
-        lastSeenElem.setAttribute("id", "lastSeen");
-        levelElem.setAttribute("id", "level");
-
-        usernameElem.innerHTML = `Welcome ${name}`;
-        lastSeenElem.innerHTML = `Last save: ${lastSeen}`;
-        levelElem.innerHTML = `Level ${currentLevel.level}`;
-
-        profileElem.appendChild(usernameElem);
-        profileElem.appendChild(lastSeenElem);
-        profileElem.appendChild(levelElem);
+        setProfile(name, lastSeen, currentLevel.level);
+        toggleLoadSaveButton(true);
 
         // update user data
         dataset.lastSeen = new Date();
@@ -77,14 +65,16 @@ function startLesson() {
     totalUnlearnedCards = unlearnedCards.length;
     lessons = unlearnedCards;
 
-    correctPercentageElem.innerHTML = "100%";
-    remainingCountElem.innerHTML = lessons.length;
+    correctPercentageElem.innerHTML = "✔100%&nbsp;";
+    remainingCountElem.innerHTML = `&nbsp;🎴${lessons.length}`;
+
+    enableAnswerInput();
 
     if (lessons.length > 0) {
         currentCard = lessons.shift();
         displayCard(currentCard);
     } else {
-        displayModal();
+        endLesson();
     }
 }
 
@@ -106,9 +96,9 @@ function checkAnswer(userInput, answer) {
 
 answerInput.addEventListener('keyup', (event) => {
 
-    remainingCountElem.innerHTML = lessons.length;
     
     if ((answerInput.classList.contains('incorrectAnswer') || answerInput.classList.contains('correctAnswer')) && event.key === 'Enter') {
+        remainingCountElem.innerHTML = `&nbsp;🎴${lessons.length}`;
         // reset input and continue to next card
         
         resetInput();
@@ -117,7 +107,7 @@ answerInput.addEventListener('keyup', (event) => {
             // continue to next card
             displayCard(currentCard);
         } else {
-            displayModal();
+            endLesson();
         }
     } else if(event.key === 'Enter') {
         notesButton.removeAttribute("disabled");
@@ -137,7 +127,7 @@ answerInput.addEventListener('keyup', (event) => {
             totalIncorrectCount += 1;
         }
 
-        correctPercentageElem.innerHTML = `${Math.round(( (totalUnlearnedCards - totalIncorrectCount) / totalUnlearnedCards) * 100)}%`;
+        correctPercentageElem.innerHTML = `✔${Math.round(( (totalUnlearnedCards - totalIncorrectCount) / totalUnlearnedCards) * 100)}%&nbsp;`;
         // save the updated card back to the deck
         dataset.deck[currentCard.id] = currentCard;
         
@@ -162,6 +152,7 @@ function resetInput() {
     categoryElem.innerHTML = "";
     answerSpanElem.textContent = "";
     notesButton.setAttribute("disabled", "");
+    hideNotes();
 }
 
 function getStage(card) {
@@ -218,16 +209,19 @@ closeButton.addEventListener("click", () => {
     dialog.close();
 });
 
-function displayModal() {
+function endLesson() {
     dialog.showModal();
     saveProgress();
+    disableAnswerInput();
+    resetStats();
+    toggleLoadSaveButton(false);
 }
 
 function saveProgress() {
     let currentTimestamp = new Date();
+    dataset.lastSeen = currentTimestamp;
     currentTimestamp = currentTimestamp.toISOString().replace(/:/g,"-")
     currentTimestamp = currentTimestamp.replace(/\./,"-")
-    dataset.lastSeen = currentTimestamp;
     
     // convert data to blob and create url for download
     const datasetString = JSON.stringify(dataset);
@@ -239,17 +233,73 @@ function saveProgress() {
     link.click();
 }
 
-function displayNotes() {
+function hideNotes() {
+    // hide the notes
+    const notesTextElem = notesCardElem.getElementsByTagName("p")[0];
+    if (notesTextElem) {
+        notesCardElem.removeChild(notesTextElem);
+        notesCardElem.setAttribute("hidden", "");
+    }
+}
+
+function toggleNotes() {
     if (window.getComputedStyle(notesCardElem).display === "none") {
         // display the notes
         const notesTextElem = document.createElement("p");
-        notesTextElem.innerHTML = currentCard.notes;
+        notesTextElem.innerHTML = currentCard.notes || '';
         notesCardElem.appendChild(notesTextElem);
         notesCardElem.removeAttribute("hidden");
     } else {
-        // hide the notes
-        const notesTextElem = notesCardElem.getElementsByTagName("p")[0];
-        notesCardElem.removeChild(notesTextElem);
-        notesCardElem.setAttribute("hidden", "");
+        hideNotes();
+    }
+}
+
+function enableAnswerInput() {
+    answerInput.setAttribute("placeholder", "➭ Answer");
+    answerInput.removeAttribute("disabled");
+    answerInputButton.removeAttribute("disabled");
+}
+
+function disableAnswerInput() {
+    answerInput.setAttribute("placeholder", "");
+    answerInput.setAttribute("disabled", "");
+    answerInputButton.removeAttribute("disabled");
+}
+
+function resetStats() {
+    correctPercentageElem.innerHTML = "";
+    remainingCountElem.innerHTML = "";
+}
+
+function setProfile(name, lastSeen, level) {
+    const usernameCell = document.getElementById("username");
+    const lastSeenCell = document.getElementById("lastSeen");
+    const levelCell = document.getElementById("level");
+
+    let date = lastSeen ? new Date(lastSeen) : new Date();
+    let formattedDate = date.toLocaleDateString('en-us', { 
+        year: 'numeric', 
+        month: 'short', 
+        day: 'numeric', 
+        hour: '2-digit', 
+        minute: '2-digit', 
+        second: '2-digit', 
+        hour12: false 
+    }); 
+
+    usernameCell.innerHTML = name;
+    lastSeenCell.innerHTML = formattedDate;
+    levelCell.innerHTML = `LEVEL ${level}`;
+}
+
+function toggleLoadSaveButton(start) {
+    // if start is true, disable the load button and enable the save button
+    // if start is false, disable the save button and enable the load button 
+    if (start) {
+        loadButton.setAttribute("disabled", "");
+        saveButton.removeAttribute("disabled");
+    } else {
+        loadButton.removeAttribute("disabled");
+        saveButton.setAttribute("disabled", "");
     }
 }

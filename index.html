@@ -6,18 +6,17 @@
         <link href="./css/reset.css" rel="stylesheet" />
         <link href="./css/layout.css" rel="stylesheet" />
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Mono">
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=RocknRoll+One">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nabla">
         <script src="./scripts/index.js" defer></script>
     </head>
     <body>
         <div class="topnav">
             <div class="home">
-                <a href="./index.html"><img src="./images/house-solid.svg" /></a>
+                <a href="./index.html"><span>FLASHCARD</span></a>
             </div>
             <div class="stats">
-                <img src="./images/check-solid.svg" />
                 <span id="correctPercentage"></span>
-                <img src="./images/inbox-solid.svg" />
                 <span id="remainingCount"></span>
             </div>
             <nav class="navs">
@@ -27,12 +26,22 @@
                         <input id="loadFileInput" type="file" accept=".json" hidden /> 
                     </li>
                     <li>
-                        <button id="saveButton">Save</button>
+                        <button id="saveButton" disabled>Save</button>
                         <a id="save" hidden></a>
                     </li>
                     <li>
                         <div id="profile">
-                            
+                            <table>
+                                <tr>
+                                    <td id="username"></td>
+                                </tr>
+                                <tr>
+                                    <td id="level"></td>
+                                </tr>
+                                <tr>
+                                    <td id="lastSeen"></td>
+                                </tr>
+                            </table>
                         </div>
                     </li>
                 </ul>
@@ -47,12 +56,12 @@
         <div class="answer">
             <span id="answerSpan" hidden></span>
             <div class="answerInputDiv">
-                <input class="answerInput" placeholder="Your Response" />
-                <button id="answerInputButton">></button>
+                <input class="answerInput" disabled />
+                <button id="answerInputButton" disabled>↪</button>
             </div>
         </div>
         <div class="utils">
-            <button id="notesButton" onclick="displayNotes()" disabled>See Notes</button>
+            <button id="notesButton" onclick="toggleNotes()" disabled>See Notes</button>
         </div>
         <div class="notes">
             <div class="notesCard" hidden>
@@ -64,6 +73,6 @@
             </p>
             <button autofocus>Close</button>
         </dialog>
-        <footer class="footer">Copyright &copy Wilson Chu<span style="font-family: 'Noto Sans TC'">&nbsp;|&nbsp;朱<span></footer>
+        <footer class="footer">Copyright &copy Wilson Chu<span style="font-family: 'RocknRoll One'">&nbsp;|&nbsp;朱<span></footer>
     </body>
 </html>
