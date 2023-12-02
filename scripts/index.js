@@ -80,18 +80,14 @@ function startLesson() {
     correctPercentageElem.innerHTML = "✔100%&nbsp;";
     remainingCountElem.innerHTML = `&nbsp;🎴${lessons.length}`;
 
-    answerInput.setAttribute("placeholder", "➭ Answer");
-    answerInput.removeAttribute("disabled");
-    answerInputButton.removeAttribute("disabled");
+    enableAnswerInput();
 
     if (lessons.length > 0) {
         currentCard = lessons.shift();
         displayCard(currentCard);
     } else {
         displayModal();
-        answerInput.setAttribute("", "");
-        answerInput.setAttribute("disabled", "");
-        answerInputButton.removeAttribute("disabled");
+        disableAnswerInput();
     }
 }
 
@@ -125,6 +121,7 @@ answerInput.addEventListener('keyup', (event) => {
             displayCard(currentCard);
         } else {
             displayModal();
+            disableAnswerInput();
         }
     } else if(event.key === 'Enter') {
         notesButton.removeAttribute("disabled");
@@ -266,4 +263,16 @@ function toggleNotes() {
     } else {
         hideNotes();
     }
+}
+
+function enableAnswerInput() {
+    answerInput.setAttribute("placeholder", "➭ Answer");
+    answerInput.removeAttribute("disabled");
+    answerInputButton.removeAttribute("disabled");
+}
+
+function disableAnswerInput() {
+    answerInput.setAttribute("placeholder", "");
+    answerInput.setAttribute("disabled", "");
+    answerInputButton.removeAttribute("disabled");
 }
