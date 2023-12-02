@@ -15,37 +15,53 @@ const answerInput = document.getElementsByClassName("answerInput")[0];
 const answerInputButton = document.getElementById("answerInputButton"); 
 const answerSpanElem = document.getElementById("answerSpan"); 
 const notesCardElem = document.getElementsByClassName("notesCard")[0];
+const landingDialog = document.querySelector("#landingDialog");
+const completeDialog = document.querySelector("#completeDialog");
+const completeDialogCloseButton = document.querySelector("#completeDialog button");
 const reader = new FileReader();
+
+window.onload = landingDialog.showModal();
 
 reader.addEventListener(
     "load",
     () => {
-        dataset = JSON.parse(reader.result);
-        for (let i = 0; i < dataset.deck.length; i++) {
-            dataset.deck[i].id = i;
-            dataset.deck[i].stage = dataset.deck[i].stage ? dataset.deck[i].stage : 0;
-            dataset.deck[i].incorrectCount = 0;
-        }
-        const profileElem = document.getElementById("profile");
+
+        landingDialog.innerHTML = "<p>Loading...</p>";
+
+        // simulate data load
+        setTimeout(function() {
+            dataset = JSON.parse(reader.result);
+            for (let i = 0; i < dataset.deck.length; i++) {
+                dataset.deck[i].id = i;
+                dataset.deck[i].stage = dataset.deck[i].stage ? dataset.deck[i].stage : 0;
+                dataset.deck[i].incorrectCount = 0;
+            }
+            const profileElem = document.getElementById("profile");
+            
+            // Setup UI after data load
+            const {name, lastSeen, levels} = dataset;
+            const currentLevel = levels[levels.length-1];
+
+            setProfile(name, lastSeen, currentLevel.level);
+            toggleLoadSaveButton(true);
+
+            // update user data
+            dataset.lastSeen = new Date();
+            if (!currentLevel.updateTime) {
+                currentLevel.updateTime = dataset.lastSeen;
+            }
+
+            landingDialog.close();
+
+            startLesson();
+        }, 1000);
+
         
-        // Setup UI after data load
-        const {name, lastSeen, levels} = dataset;
-        const currentLevel = levels[levels.length-1];
-
-        setProfile(name, lastSeen, currentLevel.level);
-        toggleLoadSaveButton(true);
-
-        // update user data
-        dataset.lastSeen = new Date();
-        if (!currentLevel.updateTime) {
-            currentLevel.updateTime = dataset.lastSeen;
-        }
-        startLesson();
     },
     false,
 );
 
-loadButton.addEventListener('click', () => {
+function loadData() {
     const fileInput = document.getElementById('loadFileInput');
     
     fileInput.click();
@@ -53,12 +69,11 @@ loadButton.addEventListener('click', () => {
         const file = fileInput.files[0];
         reader.readAsText(file);
     });
-});
+}
 
-saveButton.addEventListener('click', () => {
+function saveData() {
     saveProgress();
-});
-
+}
 
 function startLesson() {
     let unlearnedCards = dataset.deck.filter(card => !card.nextReviewTime || card.nextReviewTime <= new Date());
@@ -201,16 +216,12 @@ function getNextReviewTime(stage) {
     return new Date(result);
 }
 
-const dialog = document.querySelector("dialog");
-const closeButton = document.querySelector("dialog button");
-
-// "Close" button closes the dialog
-closeButton.addEventListener("click", () => {
-    dialog.close();
-});
+function closeDialog(elem) {
+    elem.parentElement.close();
+}
 
 function endLesson() {
-    dialog.showModal();
+    completeDialog.showModal();
     saveProgress();
     disableAnswerInput();
     resetStats();
