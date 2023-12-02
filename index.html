@@ -22,11 +22,11 @@
             <nav class="navs">
                 <ul>
                     <li>
-                        <button id="loadButton">Load</button>
+                        <button id="loadButton" onclick="loadData()">Load</button>
                         <input id="loadFileInput" type="file" accept=".json" hidden /> 
                     </li>
                     <li>
-                        <button id="saveButton" disabled>Save</button>
+                        <button id="saveButton" onclick="saveData()" disabled>Save</button>
                         <a id="save" hidden></a>
                     </li>
                     <li>
@@ -67,12 +67,19 @@
             <div class="notesCard" hidden>
             </div>
         </div>
-        <dialog id="completeDialog">
+        <footer class="footer">Copyright &copy Wilson Chu<span style="font-family: 'RocknRoll One'">&nbsp;|&nbsp;朱<span></footer>
+        <dialog class="coverModal" id="landingDialog">
+            <p>
+                Welcome!<br>Please load a deck to start<br>by clicking on the load button.
+            </p>
+            <button onclick="loadData()" autofocus>Load</button>
+            <button onclick="closeDialog(this)" autofocus>Close</button>
+        </dialog>
+        <dialog class="coverModal" id="completeDialog">
             <p>
                 Congratulations!<br>You have completed the deck for now.<br>Progress has been saved.
             </p>
-            <button autofocus>Close</button>
+            <button onclick="closeDialog(this)" autofocus>Close</button>
         </dialog>
-        <footer class="footer">Copyright &copy Wilson Chu<span style="font-family: 'RocknRoll One'">&nbsp;|&nbsp;朱<span></footer>
     </body>
 </html>

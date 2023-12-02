@@ -246,7 +246,7 @@ input, button {
     opacity: 0.75;
 }
 
-#completeDialog {
+.coverModal {
     background-color: rgba(0, 0, 0, 0.6);
     color: white;
     border: none;
@@ -255,12 +255,12 @@ input, button {
     box-shadow: 0 8px 16px 0 rgba(250, 170, 45, 0.2);
 }
 
-#completeDialog p {
+.coverModal p {
     line-height: 30px;
     font-size: 1.5em;
 }
 
-#completeDialog button {
+.coverModal button {
     margin-top: 20px;
     border-radius: 10px;
     font-size: 1.5em;
@@ -270,7 +270,7 @@ input, button {
     cursor: pointer;
 }
 
-#completeDialog button:hover,button:focus {
+.coverModal button:hover,button:focus {
     outline: none;
     box-shadow: 0 8px 16px 0 rgba(250, 170, 45, 0.2);
 }
