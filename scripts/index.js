@@ -6,6 +6,7 @@ let totalIncorrectCount = 0;
 
 const loadButton = document.getElementById('loadButton');
 const saveButton = document.getElementById('saveButton');
+const notesButton = document.getElementById("notesButton"); 
 const correctPercentageElem = document.getElementById("correctPercentage");
 const remainingCountElem = document.getElementById("remainingCount");
 const questionElem = document.getElementsByClassName("question")[0]; 
@@ -13,6 +14,7 @@ const categoryElem = document.getElementsByClassName("category")[0];
 const answerInput = document.getElementsByClassName("answerInput")[0]; 
 const answerInputButton = document.getElementById("answerInputButton"); 
 const answerSpanElem = document.getElementById("answerSpan"); 
+const notesCardElem = document.getElementsByClassName("notesCard")[0];
 const reader = new FileReader();
 
 reader.addEventListener(
@@ -118,6 +120,8 @@ answerInput.addEventListener('keyup', (event) => {
             displayModal();
         }
     } else if(event.key === 'Enter') {
+        notesButton.removeAttribute("disabled");
+
         const isCorrect = checkAnswer(answerInput.value, answerSpanElem.textContent);
 
         if (isCorrect) {
@@ -157,6 +161,7 @@ function resetInput() {
     questionElem.innerHTML = "";
     categoryElem.innerHTML = "";
     answerSpanElem.textContent = "";
+    notesButton.setAttribute("disabled", "");
 }
 
 function getStage(card) {
@@ -232,4 +237,19 @@ function saveProgress() {
     link.href = url;
     link.download = `dataset-${currentTimestamp}.json`;
     link.click();
+}
+
+function displayNotes() {
+    if (window.getComputedStyle(notesCardElem).display === "none") {
+        // display the notes
+        const notesTextElem = document.createElement("p");
+        notesTextElem.innerHTML = currentCard.notes;
+        notesCardElem.appendChild(notesTextElem);
+        notesCardElem.removeAttribute("hidden");
+    } else {
+        // hide the notes
+        const notesTextElem = notesCardElem.getElementsByTagName("p")[0];
+        notesCardElem.removeChild(notesTextElem);
+        notesCardElem.setAttribute("hidden", "");
+    }
 }
