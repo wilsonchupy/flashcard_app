@@ -18,6 +18,19 @@ input, button {
     font-family: 'Roboto Mono', Helvetica;
 }
 
+.home a {
+    text-decoration: none;
+}
+
+.home span {
+    font-family: 'Nabla';
+    font-size: 2em;
+}
+
+#correctPercentage {
+    color: mediumaquamarine;
+}
+
 .topnav {
     grid-area: topnav;
     background-image: radial-gradient(circle at center, rgb(90, 100, 110), rgb(70, 80, 90) 50%, rgb(80, 80, 100));

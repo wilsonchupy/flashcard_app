@@ -77,8 +77,8 @@ function startLesson() {
     totalUnlearnedCards = unlearnedCards.length;
     lessons = unlearnedCards;
 
-    correctPercentageElem.innerHTML = "100%";
-    remainingCountElem.innerHTML = lessons.length;
+    correctPercentageElem.innerHTML = "✔100%&nbsp;";
+    remainingCountElem.innerHTML = `&nbsp;🎴${lessons.length}`;
 
     if (lessons.length > 0) {
         currentCard = lessons.shift();
@@ -106,9 +106,9 @@ function checkAnswer(userInput, answer) {
 
 answerInput.addEventListener('keyup', (event) => {
 
-    remainingCountElem.innerHTML = lessons.length;
     
     if ((answerInput.classList.contains('incorrectAnswer') || answerInput.classList.contains('correctAnswer')) && event.key === 'Enter') {
+        remainingCountElem.innerHTML = `&nbsp;🎴${lessons.length}`;
         // reset input and continue to next card
         
         resetInput();
@@ -137,7 +137,7 @@ answerInput.addEventListener('keyup', (event) => {
             totalIncorrectCount += 1;
         }
 
-        correctPercentageElem.innerHTML = `${Math.round(( (totalUnlearnedCards - totalIncorrectCount) / totalUnlearnedCards) * 100)}%`;
+        correctPercentageElem.innerHTML = `✔${Math.round(( (totalUnlearnedCards - totalIncorrectCount) / totalUnlearnedCards) * 100)}%&nbsp;`;
         // save the updated card back to the deck
         dataset.deck[currentCard.id] = currentCard;
         
