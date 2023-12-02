@@ -1,0 +1,26 @@
+{
+    "username": "chup3",
+    "name": "Wilson Chu",
+	"levels": [{"level": 0, "updateTime": null}],
+	"lastSeen": null,
+	"deck": [
+        {
+            "question": "The tag that contains a collection of metadata elements that describe the document or provide instructions to the browser",
+            "answer": "head",
+            "category": "html",
+            "notes": "see chapter 1 slide 41"
+        },
+        {
+            "question": "The css selector that matches the child element that is a child of the parent element",
+            "answer": ">",
+            "category": "css",
+            "notes": "parent > child"
+        },
+        {
+            "question": "The property of an element that returns the HTML code within itself",
+            "answer": "innerHTML",
+            "category": "js",
+            "notes": "HTML code stored within a page element is referenced using element.innerHTML where element is an object reference to an element within a web document. For example: /* Display the current date and time */document.getElementById('dateNow').innerHTML = 'm/d/y<br />h:m:s'"
+        }
+    ]
+}
