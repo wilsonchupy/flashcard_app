@@ -162,6 +162,7 @@ function resetInput() {
     categoryElem.innerHTML = "";
     answerSpanElem.textContent = "";
     notesButton.setAttribute("disabled", "");
+    hideNotes();
 }
 
 function getStage(card) {
@@ -239,17 +240,23 @@ function saveProgress() {
     link.click();
 }
 
-function displayNotes() {
+function hideNotes() {
+    // hide the notes
+    const notesTextElem = notesCardElem.getElementsByTagName("p")[0];
+    if (notesTextElem) {
+        notesCardElem.removeChild(notesTextElem);
+        notesCardElem.setAttribute("hidden", "");
+    }
+}
+
+function toggleNotes() {
     if (window.getComputedStyle(notesCardElem).display === "none") {
         // display the notes
         const notesTextElem = document.createElement("p");
-        notesTextElem.innerHTML = currentCard.notes;
+        notesTextElem.innerHTML = currentCard.notes || '';
         notesCardElem.appendChild(notesTextElem);
         notesCardElem.removeAttribute("hidden");
     } else {
-        // hide the notes
-        const notesTextElem = notesCardElem.getElementsByTagName("p")[0];
-        notesCardElem.removeChild(notesTextElem);
-        notesCardElem.setAttribute("hidden", "");
+        hideNotes();
     }
 }
