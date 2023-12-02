@@ -50,18 +50,18 @@
             </div>
         </div>
         <div class="utils">
-            <button>See Notes</button>
+            <button id="notesButton" onclick="displayNotes()" disabled>See Notes</button>
         </div>
-        <div class="blank">
-            <dialog id="completeDialog">
-                <p>
-                    Congratulations!<br>You have completed the deck for now.<br>Progress has been saved.
-                </p>
-                <button autofocus>Close</button>
-            </dialog>
+        <div class="notes">
+            <div class="notesCard" hidden>
+            </div>
         </div>
-  
- 
+        <dialog id="completeDialog">
+            <p>
+                Congratulations!<br>You have completed the deck for now.<br>Progress has been saved.
+            </p>
+            <button autofocus>Close</button>
+        </dialog>
         <footer class="footer">Copyright &copy Wilson, 朱</footer>
     </body>
 </html>
