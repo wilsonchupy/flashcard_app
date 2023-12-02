@@ -28,11 +28,12 @@ reader.addEventListener(
         }
         const profileElem = document.getElementById("profile");
         
-        // Set 
+        // Setup UI after data load
         const {name, lastSeen, levels} = dataset;
         const currentLevel = levels[levels.length-1];
 
         setProfile(name, lastSeen, currentLevel.level);
+        toggleLoadSaveButton(true);
 
         // update user data
         dataset.lastSeen = new Date();
@@ -73,9 +74,7 @@ function startLesson() {
         currentCard = lessons.shift();
         displayCard(currentCard);
     } else {
-        displayModal();
-        disableAnswerInput();
-        resetStats();
+        endLesson();
     }
 }
 
@@ -108,9 +107,7 @@ answerInput.addEventListener('keyup', (event) => {
             // continue to next card
             displayCard(currentCard);
         } else {
-            displayModal();
-            disableAnswerInput();
-            resetStats();
+            endLesson();
         }
     } else if(event.key === 'Enter') {
         notesButton.removeAttribute("disabled");
@@ -212,9 +209,12 @@ closeButton.addEventListener("click", () => {
     dialog.close();
 });
 
-function displayModal() {
+function endLesson() {
     dialog.showModal();
     saveProgress();
+    disableAnswerInput();
+    resetStats();
+    toggleLoadSaveButton(false);
 }
 
 function saveProgress() {
@@ -290,4 +290,16 @@ function setProfile(name, lastSeen, level) {
     usernameCell.innerHTML = name;
     lastSeenCell.innerHTML = formattedDate;
     levelCell.innerHTML = `LEVEL ${level}`;
+}
+
+function toggleLoadSaveButton(start) {
+    // if start is true, disable the load button and enable the save button
+    // if start is false, disable the save button and enable the load button 
+    if (start) {
+        loadButton.setAttribute("disabled", "");
+        saveButton.removeAttribute("disabled");
+    } else {
+        loadButton.removeAttribute("disabled");
+        saveButton.setAttribute("disabled", "");
+    }
 }
