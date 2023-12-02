@@ -23,7 +23,7 @@ reader.addEventListener(
         dataset = JSON.parse(reader.result);
         for (let i = 0; i < dataset.deck.length; i++) {
             dataset.deck[i].id = i;
-            dataset.deck[i].stage = 0;
+            dataset.deck[i].stage = dataset.deck[i].stage ? dataset.deck[i].stage : 0;
             dataset.deck[i].incorrectCount = 0;
         }
         const profileElem = document.getElementById("profile");
