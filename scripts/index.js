@@ -76,7 +76,7 @@ function saveData() {
 
 function startLesson() {
     // filter items in the deck if it is new or pass review time 
-    let unlearnedCards = dataset.deck.filter(card => !card.nextReviewTime || card.nextReviewTime <= new Date());
+    let unlearnedCards = dataset.deck.filter(card => !card.nextReviewTime || new Date(card.nextReviewTime) <= new Date());
 
     // store in lesson data in global variables
     totalUnlearnedCards = unlearnedCards.length;
@@ -220,6 +220,8 @@ function getNextReviewTime(stage) {
     // Default review time for an item is the current time
     // Next review time is lengthened based on the stage 
     // The higher the stage, the longer user can skip reviewing an item
+    // Item with stage greater than 9 is considered burned
+    // Burned items should be removed from deck but just keeping it for now as the item review feature has not been built 
 
     let result;
     let now = new Date();
@@ -253,7 +255,7 @@ function getNextReviewTime(stage) {
             result = now.setMonth(now.getMonth() + 4);
             break;
         default:
-            result = now;
+            result = now.setFullYear(now.getFullYear() + 1);
             break;
     }
     return new Date(result);
