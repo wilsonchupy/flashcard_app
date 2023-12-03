@@ -76,7 +76,7 @@ function saveData() {
 
 function startLesson() {
     // filter items in the deck if it is new or pass review time 
-    let unlearnedCards = dataset.deck.filter(card => !card.nextReviewTime || card.nextReviewTime <= new Date());
+    let unlearnedCards = dataset.deck.filter(card => !card.nextReviewTime || new Date(card.nextReviewTime) <= new Date());
 
     // store in lesson data in global variables
     totalUnlearnedCards = unlearnedCards.length;
