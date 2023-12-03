@@ -36,8 +36,7 @@ reader.addEventListener(
                 dataset.deck[i].stage = dataset.deck[i].stage ? dataset.deck[i].stage : 0;
                 dataset.deck[i].incorrectCount = 0;
             }
-            const profileElem = document.getElementById("profile");
-            
+
             // Setup UI after data load
             const {name, lastSeen, levels} = dataset;
             const currentLevel = levels[levels.length-1];
@@ -76,7 +75,10 @@ function saveData() {
 }
 
 function startLesson() {
+    // filter items in the deck if it is new or pass review time 
     let unlearnedCards = dataset.deck.filter(card => !card.nextReviewTime || card.nextReviewTime <= new Date());
+
+    // store in lesson data in global variables
     totalUnlearnedCards = unlearnedCards.length;
     lessons = unlearnedCards;
 
@@ -85,6 +87,7 @@ function startLesson() {
 
     enableAnswerInput();
 
+    // Fetch a card from top of the deck
     if (lessons.length > 0) {
         currentCard = lessons.shift();
         displayCard(currentCard);
@@ -94,6 +97,9 @@ function startLesson() {
 }
 
 function checkAnswer(userInput, answer) {
+    // Using '===' to indicate a strict euqality check even though most of the time we are only comparing string
+    // prevent edge cases when answers are falsy or numeric (i.e. 0, false)
+    // TODO: use regex to provide tips if user input is similar to the answer above a certain thershold 
     if(userInput === answer) {
         answerInput.classList.add('correctAnswer');
         answerInput.classList.remove('incorrectAnswer');
@@ -111,24 +117,29 @@ function checkAnswer(userInput, answer) {
 
 answerInput.addEventListener('keyup', (event) => {
 
-    
+    // Press enter to check the answer when the input is on focus
+    // If user has already answered a question, move to the next question when enter is pressed again 
     if ((answerInput.classList.contains('incorrectAnswer') || answerInput.classList.contains('correctAnswer')) && event.key === 'Enter') {
-        remainingCountElem.innerHTML = `&nbsp;🎴${lessons.length}`;
-        // reset input and continue to next card
         
+        // update the stats
+        remainingCountElem.innerHTML = `&nbsp;🎴${lessons.length}`;
+        
+        // reset input and continue to next card
         resetInput();
         if (lessons.length > 0) {
             currentCard = lessons.shift();
-            // continue to next card
             displayCard(currentCard);
         } else {
             endLesson();
         }
     } else if(event.key === 'Enter') {
+
+        // Allow user to check the notes after a question is attempt
         notesButton.removeAttribute("disabled");
 
         const isCorrect = checkAnswer(answerInput.value, answerSpanElem.textContent);
 
+        // update data for a card
         if (isCorrect) {
             currentCard.incorrectCount = 0;
             currentCard.stage += 1;
@@ -142,8 +153,12 @@ answerInput.addEventListener('keyup', (event) => {
             totalIncorrectCount += 1;
         }
 
+        // The lowest correct percentage is 0
         let correctPercentage = totalUnlearnedCards - totalIncorrectCount > 0 ? Math.round(( (totalUnlearnedCards - totalIncorrectCount) / totalUnlearnedCards) * 100) : 0;
+        
+        // update the stats
         correctPercentageElem.innerHTML = `✔${correctPercentage}%&nbsp;`;
+        
         // save the updated card back to the deck
         dataset.deck[currentCard.id] = currentCard;
         
@@ -151,6 +166,7 @@ answerInput.addEventListener('keyup', (event) => {
 });
 
 function displayCard(card) {
+    // populate the UI with card data
     const answer = card.answer;
 
     questionElem.innerHTML = card.question;
@@ -159,6 +175,7 @@ function displayCard(card) {
 }
 
 function resetInput() {
+    // restore UI to initial state
     answerInput.value = "";
     answerInput.classList.remove('correctAnswer');
     answerInput.classList.remove('incorrectAnswer');   
@@ -172,6 +189,11 @@ function resetInput() {
 }
 
 function getStage(card) {
+    // Calculate the stage of an item in the deck
+    // Incorrect count is the number of tries before getting an item right in a session
+    // Penalty factor is doubled when item reaches stage 5
+    // The lowest stage for an item is 0
+
     let incorrectAdjustmentCount = Math.ceil(card.incorrectCount / 2);
     let penaltyFactor = card.stage >= 5 ? 2 : 1;
     let newStage = card.stage - (incorrectAdjustmentCount * penaltyFactor);
@@ -179,6 +201,11 @@ function getStage(card) {
 }
 
 function getNextReviewTime(stage) {
+    // Calculate the next review time for an item in the deck
+    // Default review time for an item is the current time
+    // Next review time is lengthened based on the stage 
+    // The higher the stage, the longer user can skip reviewing an item
+
     let result;
     let now = new Date();
 
@@ -218,10 +245,13 @@ function getNextReviewTime(stage) {
 }
 
 function closeDialog(elem) {
+    // Method for close buttons inside a dialog element
     elem.parentElement.close();
 }
 
 function endLesson() {
+    // Display complete message and save progress automatically
+    // Restore UI to initial state
     completeDialog.showModal();
     saveProgress();
     disableAnswerInput();
@@ -230,6 +260,8 @@ function endLesson() {
 }
 
 function saveProgress() {
+    // Update last seen as current datetime
+    // replace symbols in timestamp with hypen for attaching to a filename 
     let currentTimestamp = new Date();
     dataset.lastSeen = currentTimestamp;
     currentTimestamp = currentTimestamp.toISOString().replace(/:/g,"-")
@@ -246,7 +278,7 @@ function saveProgress() {
 }
 
 function hideNotes() {
-    // hide the notes
+    // hide the notes if it is shown
     const notesTextElem = notesCardElem.getElementsByTagName("p")[0];
     if (notesTextElem) {
         notesCardElem.removeChild(notesTextElem);
@@ -256,7 +288,7 @@ function hideNotes() {
 
 function toggleNotes() {
     if (window.getComputedStyle(notesCardElem).display === "none") {
-        // display the notes
+        // display the notes if it is not shown
         const notesTextElem = document.createElement("p");
         notesTextElem.innerHTML = currentCard.notes || '';
         notesCardElem.appendChild(notesTextElem);
@@ -305,8 +337,8 @@ function setProfile(name, lastSeen, level) {
 }
 
 function toggleLoadSaveButton(start) {
-    // if start is true, disable the load button and enable the save button
-    // if start is false, disable the save button and enable the load button 
+    // start is true when a study session starts
+    // start is false when a study session ends 
     if (start) {
         loadButton.setAttribute("disabled", "");
         saveButton.removeAttribute("disabled");
