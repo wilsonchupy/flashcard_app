@@ -2,7 +2,7 @@
 ## _An effective studying companion_
 
 This Flash Card app is built with plain html, css, and javascript for offline studying.
-Insipired by Anki(https://ankiuser.net/) and Wanikani (https://www.wanikani.com/), this application provides an alternative to users who want to use their customized dataset for studying but still want a gamified experience.
+Insipired by Anki(https://ankiuser.net/) and Wanikani (https://www.wanikani.com/), this application provides an ***free*** alternative to users who want to use their customized dataset for studying but still want a gamified experience.
 
 - Simple one page application that works offline
 - Users can keep decks separated for various topics (e.g. Web Development, C#, Marketing ... ) and track progress accordingly
@@ -32,6 +32,15 @@ index.html
 
 Load a dataset when prompt by the welcome screen to start a study session
 
+Longer set of data, notes not included
+```sh
+data.json
+```
+
+Data for testing, few questions and notes included
+```sh
+test.json
+```
 ## Development
 
 Contact me if you want to contribute to the project!
