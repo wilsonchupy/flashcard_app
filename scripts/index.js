@@ -115,55 +115,70 @@ function checkAnswer(userInput, answer) {
     }
 }
 
+answerInputButton.addEventListener('click', (event) => {
+    // Click to check the answer
+    // If user has already answered a question, move to the next question when the button is clicked again 
+    if (answerInput.classList.contains('incorrectAnswer') || answerInput.classList.contains('correctAnswer')) {
+        handleNextCard();
+    } else {
+        submitAnswer();
+    }
+})
+
 answerInput.addEventListener('keyup', (event) => {
 
     // Press enter to check the answer when the input is on focus
     // If user has already answered a question, move to the next question when enter is pressed again 
     if ((answerInput.classList.contains('incorrectAnswer') || answerInput.classList.contains('correctAnswer')) && event.key === 'Enter') {
-        
-        // update the stats
-        remainingCountElem.innerHTML = `&nbsp;🎴${lessons.length}`;
-        
-        // reset input and continue to next card
-        resetInput();
-        if (lessons.length > 0) {
-            currentCard = lessons.shift();
-            displayCard(currentCard);
-        } else {
-            endLesson();
-        }
+        handleNextCard();
     } else if(event.key === 'Enter') {
-
-        // Allow user to check the notes after a question is attempt
-        notesButton.removeAttribute("disabled");
-
-        const isCorrect = checkAnswer(answerInput.value, answerSpanElem.textContent);
-
-        // update data for a card
-        if (isCorrect) {
-            currentCard.incorrectCount = 0;
-            currentCard.stage += 1;
-            currentCard.stage = getStage(currentCard);
-            currentCard.nextReviewTime = getNextReviewTime(currentCard.stage);
-        } else {
-            currentCard.incorrectCount++;
-            currentCard.stage = getStage(currentCard);
-            currentCard.nextReviewTime = getNextReviewTime(currentCard.stage);
-            lessons.push(currentCard);
-            totalIncorrectCount += 1;
-        }
-
-        // The lowest correct percentage is 0
-        let correctPercentage = totalUnlearnedCards - totalIncorrectCount > 0 ? Math.round(( (totalUnlearnedCards - totalIncorrectCount) / totalUnlearnedCards) * 100) : 0;
-        
-        // update the stats
-        correctPercentageElem.innerHTML = `✔${correctPercentage}%&nbsp;`;
-        
-        // save the updated card back to the deck
-        dataset.deck[currentCard.id] = currentCard;
-        
+        submitAnswer();
     }
 });
+
+function handleNextCard() {
+    // update the stats
+    remainingCountElem.innerHTML = `&nbsp;🎴${lessons.length}`;
+            
+    // reset input and continue to next card
+    resetInput();
+    if (lessons.length > 0) {
+        currentCard = lessons.shift();
+        displayCard(currentCard);
+    } else {
+        endLesson();
+    }
+}
+
+function submitAnswer() {
+    // Allow user to check the notes after a question is attempt
+    notesButton.removeAttribute("disabled");
+
+    const isCorrect = checkAnswer(answerInput.value, answerSpanElem.textContent);
+
+    // update data for a card
+    if (isCorrect) {
+        currentCard.incorrectCount = 0;
+        currentCard.stage += 1;
+        currentCard.stage = getStage(currentCard);
+        currentCard.nextReviewTime = getNextReviewTime(currentCard.stage);
+    } else {
+        currentCard.incorrectCount++;
+        currentCard.stage = getStage(currentCard);
+        currentCard.nextReviewTime = getNextReviewTime(currentCard.stage);
+        lessons.push(currentCard);
+        totalIncorrectCount += 1;
+    }
+
+    // The lowest correct percentage is 0
+    let correctPercentage = totalUnlearnedCards - totalIncorrectCount > 0 ? Math.round(( (totalUnlearnedCards - totalIncorrectCount) / totalUnlearnedCards) * 100) : 0;
+    
+    // update the stats
+    correctPercentageElem.innerHTML = `✔${correctPercentage}%&nbsp;`;
+    
+    // save the updated card back to the deck
+    dataset.deck[currentCard.id] = currentCard;
+}
 
 function displayCard(card) {
     // populate the UI with card data
@@ -307,7 +322,7 @@ function enableAnswerInput() {
 function disableAnswerInput() {
     answerInput.setAttribute("placeholder", "");
     answerInput.setAttribute("disabled", "");
-    answerInputButton.removeAttribute("disabled");
+    answerInputButton.setAttribute("disabled", "");
 }
 
 function resetStats() {
