@@ -320,6 +320,7 @@ function setProfile(name, lastSeen, level) {
     const lastSeenCell = document.getElementById("lastSeen");
     const levelCell = document.getElementById("level");
 
+    // Format date to MMM DD, YYYY, HH:MM:SS
     let date = lastSeen ? new Date(lastSeen) : new Date();
     let formattedDate = date.toLocaleDateString('en-us', { 
         year: 'numeric', 
