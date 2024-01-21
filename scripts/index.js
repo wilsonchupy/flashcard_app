@@ -13,7 +13,6 @@ const questionElem = document.getElementsByClassName("question")[0];
 const categoryElem = document.getElementsByClassName("category")[0]; 
 const answerInput = document.getElementsByClassName("answerInput")[0]; 
 const answerInputButton = document.getElementById("answerInputButton"); 
-const answerSpanElem = document.getElementById("answerSpan"); 
 const notesCardElem = document.getElementsByClassName("notesCard")[0];
 const landingDialog = document.querySelector("#landingDialog");
 const completeDialog = document.querySelector("#completeDialog");
@@ -96,11 +95,11 @@ function startLesson() {
     }
 }
 
-function checkAnswer(userInput, answer) {
+function checkAnswer(userInput, answers) {
     // Using '===' to indicate a strict euqality check even though most of the time we are only comparing string
     // prevent edge cases when answers are falsy or numeric (i.e. 0, false)
     // TODO: use regex to provide tips if user input is similar to the answer above a certain thershold 
-    if(userInput === answer) {
+    if (answers.includes(userInput.toLowerCase())) {
         answerInput.classList.add('correctAnswer');
         answerInput.classList.remove('incorrectAnswer');
         answerInputButton.classList.add('correctAnswer');
@@ -154,7 +153,7 @@ function submitAnswer() {
     // Allow user to check the notes after a question is attempt
     notesButton.removeAttribute("disabled");
 
-    const isCorrect = checkAnswer(answerInput.value, answerSpanElem.textContent);
+    const isCorrect = checkAnswer(answerInput.value, currentCard.answers);
 
     // update data for a card
     if (isCorrect) {
@@ -182,11 +181,10 @@ function submitAnswer() {
 
 function displayCard(card) {
     // populate the UI with card data
-    const answer = card.answer;
+    const answers = card.answers;
 
     questionElem.innerHTML = card.question;
     categoryElem.innerHTML = card.category;
-    answerSpanElem.textContent = answer;
 }
 
 function resetInput() {
@@ -198,7 +196,6 @@ function resetInput() {
     answerInputButton.classList.remove('incorrectAnswer');
     questionElem.innerHTML = "";
     categoryElem.innerHTML = "";
-    answerSpanElem.textContent = "";
     notesButton.setAttribute("disabled", "");
     hideNotes();
 }
