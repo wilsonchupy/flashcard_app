@@ -185,6 +185,11 @@ function displayCard(card) {
 
     questionElem.innerHTML = card.question;
     categoryElem.innerHTML = card.category;
+
+    // allow user to see notes if the item has never been attempt or stage is 0
+    if (card.stage === 0) {
+        notesButton.removeAttribute("disabled");
+    }
 }
 
 function resetInput() {
