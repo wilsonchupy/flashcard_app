@@ -99,7 +99,7 @@ function checkAnswer(userInput, answers) {
     // Using '===' to indicate a strict euqality check even though most of the time we are only comparing string
     // prevent edge cases when answers are falsy or numeric (i.e. 0, false)
     // TODO: use regex to provide tips if user input is similar to the answer above a certain thershold 
-    if (answers.includes(userInput.toLowerCase())) {
+    if (answers.map(x=>x.toLowerCase()).includes(userInput.toLowerCase())) {
         answerInput.classList.add('correctAnswer');
         answerInput.classList.remove('incorrectAnswer');
         answerInputButton.classList.add('correctAnswer');
@@ -167,6 +167,8 @@ function submitAnswer() {
         currentCard.nextReviewTime = getNextReviewTime(currentCard.stage);
         lessons.push(currentCard);
         totalIncorrectCount += 1;
+
+        notesButton.focus();
     }
 
     // The lowest correct percentage is 0
@@ -190,6 +192,8 @@ function displayCard(card) {
     if (card.stage === 0) {
         notesButton.removeAttribute("disabled");
     }
+
+    answerInput.focus();
 }
 
 function resetInput() {
@@ -314,6 +318,7 @@ function toggleNotes() {
         notesCardElem.removeAttribute("hidden");
     } else {
         hideNotes();
+        answerInput.focus();
     }
 }
 
