@@ -303,10 +303,14 @@ function saveProgress() {
 function hideNotes() {
     // hide the notes if it is shown
     const notesTextElem = notesCardElem.getElementsByTagName("p")[0];
+    const notesImgDivElem = notesCardElem.getElementsByTagName("div")[0];
     if (notesTextElem) {
         notesCardElem.removeChild(notesTextElem);
-        notesCardElem.setAttribute("hidden", "");
     }
+    if (notesImgDivElem) {
+        notesCardElem.removeChild(notesImgDivElem);
+    }
+    notesCardElem.setAttribute("hidden", "");
 }
 
 function toggleNotes() {
@@ -316,6 +320,16 @@ function toggleNotes() {
         notesTextElem.innerHTML = currentCard.notes || '';
         notesCardElem.appendChild(notesTextElem);
         notesCardElem.removeAttribute("hidden");
+
+        if (currentCard.image) {
+            let imgDiv = document.createElement('div');
+            let img = document.createElement('img');
+            imgDiv.style = "display: flex; justify-content: center; align-items: center;";
+            img.src = currentCard.image;
+            img.alt = currentCard.image;
+            imgDiv.appendChild(img);
+            notesCardElem.appendChild(imgDiv);
+        }
     } else {
         hideNotes();
         answerInput.focus();
