@@ -10,7 +10,7 @@ const notesButton = document.getElementById("notesButton");
 const correctPercentageElem = document.getElementById("correctPercentage");
 const remainingCountElem = document.getElementById("remainingCount");
 const questionElem = document.getElementsByClassName("question")[0]; 
-const categoryElem = document.getElementsByClassName("category")[0]; 
+const tagsElem = document.getElementsByClassName("tags")[0]; 
 const answerInput = document.getElementsByClassName("answerInput")[0]; 
 const answerInputButton = document.getElementById("answerInputButton"); 
 const notesCardElem = document.getElementsByClassName("notesCard")[0];
@@ -186,7 +186,7 @@ function displayCard(card) {
     const answers = card.answers;
 
     questionElem.innerHTML = card.question;
-    categoryElem.innerHTML = card.category;
+    tagsElem.innerHTML = card.tags;
 
     // allow user to see notes if the item has never been attempt or stage is 0
     if (card.stage === 0) {
@@ -204,7 +204,7 @@ function resetInput() {
     answerInputButton.classList.remove('correctAnswer');
     answerInputButton.classList.remove('incorrectAnswer');
     questionElem.innerHTML = "";
-    categoryElem.innerHTML = "";
+    tagsElem.innerHTML = "";
     notesButton.setAttribute("disabled", "");
     hideNotes();
 }

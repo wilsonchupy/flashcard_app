@@ -4,7 +4,7 @@ body {
     grid-template-areas: 
         "topnav"
         "question"
-        "category"
+        "tags"
         "answer"
         "utils"
         "notes"
@@ -74,8 +74,8 @@ input, button {
     color: white;
 }
 
-.category {
-    grid-area: category;
+.tags {
+    grid-area: tags;
     background-image: radial-gradient(circle at center, rgb(90, 100, 110), rgb(70, 80, 90) 50%, rgb(80, 80, 100));
     display: flex;
     justify-content: center;
